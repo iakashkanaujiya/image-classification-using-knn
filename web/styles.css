@@ -1,0 +1,136 @@
+body{
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    background-color: #000;
+    font-family: Arial, Helvetica, sans-serif;
+    overscroll-behavior: none;
+}
+
+#content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 5px;
+    color: #fff;
+    background-color: rgb(255, 166, 0);
+}
+
+button:hover {
+    background-color: rgb(245, 173, 39);
+}
+
+button:disabled, button:disabled:hover {
+    background-color: gray;
+    cursor: default;
+}
+
+#student {
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.row:nth-child(odd) {
+    background-color: #1e1e1e;
+}
+
+.row .rowLabel {
+    flex: 1 1 0;
+    color: #fff;
+    margin-left: 30px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;;
+}
+
+.row .thumb {
+    width: 100%;
+    filter: invert(1);
+}
+
+.sampleContainer {
+    flex: 1 1 0;
+    color: #fff;
+    text-align: center;
+    border: 2px solid rgb(255, 166, 0);
+    border-radius: 10%;
+    margin: 1px;
+    overflow: hidden;
+    max-width: 8%;
+}
+
+table,
+td {
+    border: 2px solid white;
+    padding: 5px;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+thead {
+    font-weight: bold;
+}
+
+#container {
+    width: calc(100% - 400px);
+}
+
+#chartContainer {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+
+.emphasize {
+    background-color: rgb(38, 38, 38) !important;
+}
+
+#inputContainer {
+    position: fixed;
+    top: 50%;
+    right: 500px;
+    transform: translate(0, -50%);
+    text-align: center;
+    z-index: 1000000;
+}
+
+#controlPanel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 500px;
+    text-align: center;
+    padding: 10px;
+}
+
+#predictedLabelContainer{
+    color: white;
+    font-size: 30px;
+    position: relative;
+}
+
+#statistics {
+    margin-top: 10px;
+}
+
+.flagged {
+    background-color: red;
+}

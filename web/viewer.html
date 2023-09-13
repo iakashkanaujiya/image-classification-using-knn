@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, maximum-scale=0.9, user-scalable=0" />
+    <meta charset="utf-8">
+    <title>Data Viewer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1 style="text-align: center; margin-bottom: 20px;">Data Viewer</h1>
+    <div id="inputContainer">
+        <div id="predictedLabelContainer"></div>
+    </div>
+    <div id="chartContainer"></div>
+    <div id="controlPanel">
+        <button onclick="toggleInput()">Toggle Input</button>
+        <div id="statistics"></div>
+    </div>
+    <div id="container"></div>
+    <script src="../common/js_objects/features.js"></script>
+    <script src="../common/js_objects/training.js"></script>
+    <script src="../common/js_objects/testing.js"></script>
+    <script src="../common/js_objects/minMax.js"></script>
+
+    <script src="../common/constants.js"></script>
+    <script src="../common/utils.js"></script>
+    <script src="../common/draw.js"></script>
+    <script src="../common/featureFunction.js"></script>
+    <script src="../common/classifiers/knn.js"></script>
+
+    <script src="js/sketchPad.js"></script>
+    <script src="js/display.js"></script>
+    <script src="js/dataCleaner.js"></script>
+
+    <!-- Chart Library -->
+    <script src="js/graphics.js"></script>
+    <script src="js/math.js"></script>
+    <script src="js/chart.js"></script>
+
+    <script>
+        // K nearest neighbours
+        let k = 50;
+        const { featuresNames, samples } = features;
+        const trainingSamples = training.samples;
+        const testingSamples = testing.samples;
+
+        /** KNN Classifier */
+        const kNN = new KNN(trainingSamples, k);
+
+        let totalCount = 0;
+        let correctCount = 0;
+        for (const testSample of testingSamples) {
+            testSample.truth = testSample.label;
+            testSample.label = "?";
+            const { label } = kNN.predict(testSample.points);
+            testSample.label = label;
+            testSample.correct = testSample.label == testSample.truth;
+
+            totalCount++;
+            correctCount += testSample.correct ? 1 : 0;
+        };
+
+        //show accuracy
+        statistics.innerHTML = "<b>ACCURACY</b><br>"
+            + correctCount + "/" + totalCount + " (" +
+            utils.formatPercent(correctCount / totalCount) + ")";
+
+        const subtitleTrain = document.createElement("h2");
+        subtitleTrain.innerHTML = "Training Data";
+        subtitleTrain.style = "text-align: center;";
+        container.appendChild(subtitleTrain);
+
+        const trainingGroups = utils.groupBy(trainingSamples, "student_id");
+        for (let student_id in trainingGroups) {
+            const samples = trainingGroups[student_id];
+            const studentName = samples[0].student_name;
+            createRow(container, studentName, samples);
+        };
+
+        const subtitle = document.createElement("h2");
+        subtitle.innerHTML = "Testing Data";
+        subtitle.style = "text-align: center;";
+        container.appendChild(subtitle);
+
+        const testingGroups = utils.groupBy(testingSamples, "student_id");
+        for (let student_id in testingGroups) {
+            const samples = testingGroups[student_id];
+            const studentName = samples[0].student_name;
+            createRow(container, studentName, samples);
+        };
+
+        /** Custom Chart to show the data in sample space*/
+        const options = {
+            size: 400,
+            axesLabels: featuresNames,
+            styles: utils.styles,
+            icon: "image",
+            bg: new Image()
+        };
+        options.bg.src = constants.DECISION_BOUNDARY;
+        graphics.generateImages(utils.styles); // generate images of the data
+        const chart = new Chart(chartContainer, trainingSamples, options, handleClick);
+
+        // Sketch Pad to draw the sketch or drawing
+        const sketchPad = new SketchPad(inputContainer, onDrawingUpdate);
+        // make the background blur
+        sketchPad.canvas.style.cssText += "outline: 10000px solid rgba(0, 0, 0, 0.7); border: 5px solid rgb(255, 166, 0);";
+        toggleInput();
+
+        //when drawing update
+        function onDrawingUpdate(paths) {
+            const functions = featureFunction.inUse.map(f => f.function);
+            const points = functions.map(f => f(paths));
+
+            utils.normalizePoints([points], minMax);
+            const { label, nearestSamples } = kNN.predict(points);
+            predictedLabelContainer.innerHTML = "Is it a " + label + "?";
+            chart.showDynamicPoints(points, label, nearestSamples);
+        };
+    </script>
+</body>
+
+</html>

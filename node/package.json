@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "postinstall": "node data_generator && node features_extractor && node run_evaluation"
+  },
+  "dependencies": {
+    "canvas": "^2.11.2"
+  }
+}
