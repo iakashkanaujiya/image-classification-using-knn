@@ -18,7 +18,6 @@ for (const sample of testingSamples) {
     totalCount++;
 };
 
-
 let dataToPrint = "Accuracy: " + correctCount + "/" + totalCount +
     " (" + utils.formatPercent(correctCount / totalCount) + ")"
 console.log(dataToPrint);
@@ -34,11 +33,13 @@ const ctx = canvas.getContext("2d");
 for (let x = 0; x < canvas.width; x++) {
     for (let y = 0; y < canvas.height; y++) {
         const points = [x / canvas.width, 1 - y / canvas.height];
+        // points.push(0);
         const { label } = kNN.predict(points);
         const color = utils.styles[label].color;
         ctx.fillStyle = color;
         ctx.fillRect(x, y, 1, 1);
     };
+    utils.printProgress(x, canvas.width);
 };
 
 const buffer = canvas.toBuffer("image/png");

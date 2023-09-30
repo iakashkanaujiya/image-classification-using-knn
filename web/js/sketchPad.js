@@ -93,13 +93,13 @@ class SketchPad {
         }
 
         this.triggerUpdate();
-    }
+    };
 
     triggerUpdate(){
         if (this.onUpdate) {
             this.onUpdate(this.paths);
         }
-    }
+    };
 
     //Get mouse location
     #getMouseLocation(event){

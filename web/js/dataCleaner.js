@@ -16,4 +16,4 @@ function toggleFlaggedSamples(sample) {
         const el = document.getElementById("sample_" + id);
         el.classList.add("flagged");
     }
-}
+};

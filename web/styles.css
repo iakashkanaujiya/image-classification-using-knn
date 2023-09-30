@@ -99,6 +99,14 @@ thead {
     transform: translate(0, -50%);
 }
 
+#confusionContainer {
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+    color: #000;
+    z-index: 1;
+}
+
 .emphasize {
     background-color: rgb(38, 38, 38) !important;
 }

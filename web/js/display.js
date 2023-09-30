@@ -70,6 +70,7 @@ function handleClick(sample, doScroll = true) {
     chart.selectSample(sample);
 }
 
+// toggle the Sketchpad input
 function toggleInput() {
     if (inputContainer.style.display == "none") {
         inputContainer.style.display = "block";
@@ -77,4 +78,12 @@ function toggleInput() {
         inputContainer.style.display = "none";
         sketchPad.triggerUpdate();
     }
-}
+};
+
+function toggleOutput() {
+    if (confusionContainer.style.display == "none") {
+        confusionContainer.style.display = "block";
+    } else {
+        confusionContainer.style.display = "none";
+    }
+};
